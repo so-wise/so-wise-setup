@@ -14,11 +14,16 @@ format bank
 disp(delR_gradual')
 sum(delR_gradual)
 
-%% Write delR to plain text file
+%% Write delR to plain text file and binary file
 
 [fid,msg] = fopen('dz_file.txt','wt');
 assert(fid>=3,msg)
 fprintf(fid,'%3.1f,\n',delR_gradual');
+fclose(fid);
+
+% write to 64 bit file
+fid = fopen('delR','w','ieee-be');
+fwrite(fid,delR_gradual','float64');
 fclose(fid);
 
 %% An alternative from Ariane Verdy
