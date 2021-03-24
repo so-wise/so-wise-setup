@@ -1,5 +1,5 @@
 %
-% Plot the bathymetry and fix some small issues
+% Plot the bathymetry 
 %
 
 %% Initial setup
@@ -7,24 +7,6 @@
 % clean up workspace
 clear 
 close all
-
-%% Fix an issue with delY
-
-% copy
-!mv topo_outputs/delY topo_outputs/delY_pre
-
-% read in 
-fid = fopen('topo_outputs/delY_pre', 'r', 'ieee-be');
-dy = fread(fid, 'float64');
-fclose(fid);
-
-% plot
-plot(dy)
-
-% write out
-fid = fopen('topo_outputs/delY', 'w', 'ieee-be');
-fwrite(fid, dy, 'float64');
-fclose(fid);
 
 %% Read the bathymetry files
 
