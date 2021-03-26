@@ -201,12 +201,21 @@ git push -u origin «YOUR_NEWBRANCH_NAME»
 ```
 In order to get the grid files, I had to turn most of the packages off. Of course, this produces a lot of warnings, but that's totally fine. I produced the grid files and have saved them on BAS HPC in the `so-wise-gyre` directory. I've also run the function `check_final_grid(grid_path)` on the MITgcm grid files, which returned "everything looks good!" So the grid passes the checks in that function. For now, I have _turned off EXCH2_. I'm okay with this strategy, although I should ask MM about possible drawbacks here. Presumably we don't _have_ to use EXCH2 for a state estimate these days? Hopefully not. 
 
+### Final grid check
+
+Once I moved the newly generated grid into a `grid` directory on the same level as the `run` directory in `so-wise-gyre`, I ran the following command:
+```
+check_final_grid('so-wise-gyre/grid/')
+```
+The grid passed the checks in this function, so now we're ready to try again. Let's see if we can interpolate initial conditions now. 
+
 ## Interpolate initial conditions
 
 As a start, I will use SOSE initial conditions. For now, let's stick with Kaitlin's procedure of initialising from the SOSE climatology. We obviously might want to initialize from something more specific in the future, but this is a good first step. I've run this command:
+```
+from mitgcm_python.ics_obcs import *
 
+sose_ics(grid_path='grid/', sose_dir='/data/oceans_input/raw_input_data/SOSE_monthly_climatology/', nc_out='initial_conditions/sose_ics.nc', output_dir='initial_conditions/', constant_t=-1.9, constant_s=34.4, split=180)
 ```
-sose_ics(grid_path='grid/', sose_dir='/data/oceans_input/raw_input_data/SOSE_monthly_climatology/', nc_out='sose_ics.nc', output_dir='.', constant_t=-1.9, constant_s=34.4, split=180)
-```
-But I have received an error. I'll record this as a setup issue. 
+This produced a set of initial conditions files, as expected. 
 
